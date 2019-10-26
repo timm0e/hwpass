@@ -27,6 +27,14 @@ class Nav(Callback):
         line_1 = "/"
         if len(self.back) > 1:
             line_1 += self.back[-1].path
+            if len(line_1) > 16:
+                if line_1[-1] == "/":
+                    curr_dir = line_1.split('/')[-2] + '/'
+                else:
+                    curr_dir = line_1.split('/')[-1]
+                if len(curr_dir) > 12:
+                    curr_dir = curr_dir[:10] + "..."
+                line_1 = ".../" + curr_dir
         line_2 = ""
         current = self.get_selected()
         if self.index == 0:
