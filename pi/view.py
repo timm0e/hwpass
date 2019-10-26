@@ -27,6 +27,11 @@ class Nav(Callback):
         line_1 = "/"
         if len(self.back) > 1:
             line_1 += self.back[-1].path
+            if len(line_1) > 16:
+                curr_dir = line_1[line_1.rfind('/'):]
+                if len(curr_dir) > 13:
+                    curr_dir = curr_dir[:10] + "..."
+                line_1 = "..." + curr_dir
         line_2 = ""
         current = self.get_selected()
         if self.index == 0:
