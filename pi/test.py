@@ -1,17 +1,24 @@
-from pykeepass import PyKeePass
-
 from pykeepass.group import Group
 from pykeepass.entry import Entry
 
+from pi.rotaryEncoder import Callback, RotaryInput
+from pi.display import *
+
 back_text = "<<"
 
-class Nav:
+
+class Nav(Callback):
     def __init__(self, kp):
         self.kp = kp
         self.back = [kp.root_group]
         self.index = 0
         self.dir = self.__select_group(kp.root_group)
         self.display_selected()
+
+        # Implement Callback
+        self.next = self.step_next
+        self.prev = self.step_prev
+        self.press = self.step_into
 
     def get_selected(self):
         return self.dir[self.index]
@@ -36,6 +43,8 @@ class Nav:
                 line_2 = title
             elif type(current) is str:
                 line_2 = current
+        print_first_line(line_1)
+        print_second_line(line_2)
         print("1:", line_1)
         print("2:", line_2)
         print("-----")
@@ -98,9 +107,3 @@ def act(nav, input):
             nav.step_next()
         elif input == "d":
             nav.step_into()
-
-kp = PyKeePass("Database.kdbx", password="aysxdc456")
-nav = Nav(kp=kp)
-
-while True:
-    act(nav, input())
